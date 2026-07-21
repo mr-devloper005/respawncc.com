@@ -129,39 +129,26 @@ export function TaskDetailView({ task, post, related, comments = [] }: { task: T
   )
 }
 
-// Yelp-style red star rating row. Uses real rating/review fields when present,
-// otherwise a stable derived value (wire to real data when available).
-const hashStr = (value: string) => {
-  let h = 0
-  for (let i = 0; i < value.length; i += 1) h = (h * 31 + value.charCodeAt(i)) >>> 0
-  return h
-}
 const ratingOf = (post: SitePost) => {
   const real = Number(getContent(post).rating)
   if (real >= 1 && real <= 5) return Math.round(real * 10) / 10
-  return Math.round((3.7 + (hashStr(post.slug || post.id || post.title || 'x') % 13) / 10) * 10) / 10
+  return null
 }
 const reviewsOf = (post: SitePost) => {
   const real = Number(getContent(post).reviewCount ?? getContent(post).reviews)
   if (real > 0) return Math.floor(real)
-  return 6 + (hashStr((post.slug || post.title || 'x') + 'r') % 480)
+  return null
 }
 
 function DetailMeta({ post, category, center = false }: { post: SitePost; category?: string; center?: boolean }) {
   const rating = ratingOf(post)
-  const filled = Math.round(rating)
+  const filled = rating ? Math.round(rating) : 0
   return (
     <div className={`mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 ${center ? 'justify-center' : ''}`}>
-      <span className="inline-flex items-center gap-[3px]">
-        {[0, 1, 2, 3, 4].map((i) => (
-          <Star key={i} className={`h-[18px] w-[18px] ${i < filled ? 'fill-[var(--tk-accent)] text-[var(--tk-accent)]' : 'fill-[var(--tk-line)] text-[var(--tk-line)]'}`} />
-        ))}
-      </span>
-      <span className="text-sm font-semibold text-[var(--tk-text)]">{rating.toFixed(1)}</span>
-      <span className="text-sm text-[var(--tk-muted)]">{reviewsOf(post)} reviews</span>
+      {rating ? <><span className="inline-flex items-center gap-[3px]">{[0, 1, 2, 3, 4].map((i) => <Star key={i} className={`h-[18px] w-[18px] ${i < filled ? 'fill-[var(--tk-accent)] text-[var(--tk-accent)]' : 'fill-[var(--tk-line)] text-[var(--tk-line)]'}`} />)}</span><span className="text-sm font-semibold text-[var(--tk-text)]">{rating.toFixed(1)}</span>{reviewsOf(post) ? <span className="text-sm text-[var(--tk-muted)]">{reviewsOf(post)} reviews</span> : null}</> : null}
       {category ? (
         <>
-          <span className="h-1 w-1 rounded-full bg-[var(--tk-muted)] opacity-50" />
+          {rating ? <span className="h-1 w-1 rounded-full bg-[var(--tk-muted)] opacity-50" /> : null}
           <span className="text-sm text-[var(--tk-muted)]">{category}</span>
         </>
       ) : null}
@@ -494,7 +481,7 @@ function BadgeLine({ label, value }: { label: string; value: string }) {
   )
 }
 
-function RelatedPanel({ task, post, related }: { task: TaskKey; post: SitePost; related: SitePost[] }) {
+function RelatedPanel({ task, post: _post, related }: { task: TaskKey; post: SitePost; related: SitePost[] }) {
   const taskConfig = getTaskConfig(task)
   return (
     <div className="space-y-6">

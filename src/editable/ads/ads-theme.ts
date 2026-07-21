@@ -8,10 +8,10 @@ import type { AdSkin } from '@/lib/ads/ad-frame'
 // Site-wide default skin — tune to your brand.
 export const adSkin: AdSkin = {
   radius: '16px',
-  border: '1px solid rgba(0,0,0,0.06)',
-  shadow: '0 8px 30px rgba(0,0,0,0.06)',
+  border: '1px solid rgba(13,115,119,0.16)',
+  shadow: '0 14px 40px rgba(7,26,43,0.08)',
   background: '#ffffff',
-  labelClassName: 'bg-[#FF6600] text-white',
+  labelClassName: 'bg-[#0D7377] text-white',
 }
 
 // Optional per-slot overrides — adjust only where you need to.
