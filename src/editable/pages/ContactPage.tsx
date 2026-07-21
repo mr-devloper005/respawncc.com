@@ -51,25 +51,27 @@ export default function ContactPage() {
 
   return (
     <EditableSiteShell className={tone.shell}>
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--slot4-accent)]">{pagesContent.contact.eyebrow}</p>
-            <h1 className="editable-display mt-4 text-5xl font-semibold tracking-[-0.02em]">{pagesContent.contact.title}</h1>
-            <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>{pagesContent.contact.description}</p>
+      <main className="relative overflow-hidden bg-[var(--slot4-page-bg)]">
+        <div className="absolute inset-x-0 top-0 h-80 bg-[#071a2b]" />
+        <section className="relative mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:px-8">
+          <div className="text-white">
+            <p className="text-sm font-bold text-[#14ffec]">{pagesContent.contact.eyebrow}</p>
+            <h1 className="editable-display mt-4 text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl">Let’s make the next connection easier.</h1>
+            <p className="mt-5 max-w-2xl text-sm leading-8 text-white/65">{pagesContent.contact.description}</p>
             <div className="mt-8 space-y-4">
               {lanes.map((lane) => (
-                <div key={lane.title} className={`rounded-sm p-5 ${tone.soft}`}>
-                  <lane.icon className="h-5 w-5 text-[var(--slot4-accent)]" />
+                <div key={lane.title} className="rounded-[1.25rem] border border-white/10 bg-white/10 p-5 backdrop-blur">
+                  <lane.icon className="h-5 w-5 text-[#14ffec]" />
                   <h2 className="editable-display mt-3 text-xl font-semibold">{lane.title}</h2>
-                  <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{lane.body}</p>
+                  <p className="mt-2 text-sm leading-7 text-white/60">{lane.body}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className={`rounded-sm p-7 ${tone.panel}`}>
-            <h2 className="editable-display text-2xl font-semibold">{pagesContent.contact.formTitle}</h2>
+          <div className={`rounded-[1.75rem] p-7 shadow-[0_24px_70px_rgba(7,26,43,.18)] ${tone.panel}`}>
+            <p className="text-sm font-bold text-[var(--slot4-accent)]">Tell us what you need</p>
+            <h2 className="editable-display mt-2 text-3xl font-bold">{pagesContent.contact.formTitle}</h2>
             <EditableContactLeadForm />
           </div>
         </section>
