@@ -51,10 +51,9 @@ export default function ContactPage() {
 
   return (
     <EditableSiteShell className={tone.shell}>
-      <main className="relative overflow-hidden bg-[var(--slot4-page-bg)]">
-        <div className="absolute inset-x-0 top-0 h-80 bg-[#071a2b]" />
-        <section className="relative mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:px-8">
-          <div className="text-white">
+      <main className="bg-[var(--slot4-page-bg)]">
+        <section className="mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:px-8">
+          <div className="rounded-[1.75rem] bg-[#071a2b] p-6 text-white shadow-[0_24px_70px_rgba(7,26,43,.16)] sm:p-8 lg:p-10">
             <p className="text-sm font-bold text-[#14ffec]">{pagesContent.contact.eyebrow}</p>
             <h1 className="editable-display mt-4 text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl">Let’s make the next connection easier.</h1>
             <p className="mt-5 max-w-2xl text-sm leading-8 text-white/65">{pagesContent.contact.description}</p>
@@ -66,7 +65,6 @@ export default function ContactPage() {
                   <p className="mt-2 text-sm leading-7 text-white/60">{lane.body}</p>
                 </div>
               ))}
-            </div>
             </div>
           </div>
 
