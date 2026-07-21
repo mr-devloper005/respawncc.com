@@ -110,36 +110,38 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   return (
     <EditableSiteShell>
       <main style={taskThemeStyle(task)} className="min-h-screen bg-[var(--tk-bg)] text-[var(--tk-text)]">
-        <header className="relative overflow-hidden border-b border-[var(--tk-line)]">
-          <div className="pointer-events-none absolute inset-x-0 -top-40 h-96 bg-[radial-gradient(60%_60%_at_50%_0%,var(--tk-glow),transparent_70%)]" />
+        <header className="relative overflow-hidden border-b border-white/10 bg-[#071a2b] text-white">
+          <div className="pointer-events-none absolute -left-28 bottom-[-12rem] h-80 w-80 rotate-45 rounded-[4rem] bg-[#0d7377]" />
+          <div className="pointer-events-none absolute right-[8%] top-12 h-24 w-24 rounded-full border-[16px] border-[#14ffec]/60" />
+          <div className="pointer-events-none absolute right-[-8rem] bottom-[-12rem] h-96 w-96 rotate-45 rounded-[5rem] bg-[#0d7377]/70" />
           <div className="relative mx-auto max-w-[var(--editable-container)] px-6 py-20 sm:py-28 lg:px-8">
-            <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-[var(--tk-accent)]">
+            <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-[#14ffec]">
               <span>{theme.kicker}</span>
-              <span className="h-1 w-1 rounded-full bg-[var(--tk-accent)] opacity-50" />
-              <span className="text-[var(--tk-muted)]">{label}</span>
+              <span className="h-1 w-1 rounded-full bg-[#14ffec] opacity-50" />
+              <span className="text-white/55">{label}</span>
             </div>
             <h1 className="editable-display mt-6 max-w-3xl text-balance text-[2.5rem] font-semibold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl">
               {voice?.headline || `Browse ${label}`}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--tk-muted)]">{voice?.description || theme.note}</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/65">{voice?.description || theme.note}</p>
             {voice?.chips?.length ? (
               <div className="mt-8 flex flex-wrap gap-2.5">
                 {voice.chips.map((chip) => (
-                  <span key={chip} className="rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--tk-muted)]">{chip}</span>
+                  <span key={chip} className="rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-white/70">{chip}</span>
                 ))}
               </div>
             ) : null}
 
-            <div className="mt-12 flex flex-col gap-4 border-t border-[var(--tk-line)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm text-[var(--tk-muted)]">
-                <span className="font-semibold text-[var(--tk-text)]">{posts.length}</span> {posts.length === 1 ? 'post' : 'posts'} · {categoryLabel}
+            <div className="mt-12 flex flex-col gap-4 border-t border-white/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-white/55">
+                <span className="font-semibold text-white">{posts.length}</span> {posts.length === 1 ? 'post' : 'posts'} · {categoryLabel}
               </p>
               <form action={basePath} className="flex items-center gap-2.5">
                 <div className="relative">
                   <select
                     name="category"
                     defaultValue={category}
-                    className="h-11 appearance-none rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] pl-4 pr-10 text-sm font-medium text-[var(--tk-text)] outline-none transition focus:border-[var(--tk-accent)]"
+                    className="h-11 appearance-none rounded-full border border-white/15 bg-white pl-4 pr-10 text-sm font-medium text-[#212121] outline-none transition focus:border-[#14ffec]"
                     aria-label={voice?.filterLabel || 'Filter category'}
                   >
                     <option value="all">All categories</option>
@@ -147,7 +149,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--tk-muted)]" />
                 </div>
-                <button className="inline-flex h-11 items-center rounded-full bg-[var(--tk-accent)] px-5 text-sm font-semibold text-[var(--tk-on-accent)] transition hover:opacity-90">Apply</button>
+                <button className="inline-flex h-11 items-center rounded-full bg-[#14ffec] px-5 text-sm font-semibold text-[#071a2b] transition hover:brightness-95">Apply</button>
               </form>
             </div>
           </div>
@@ -199,26 +201,20 @@ function CardArrow({ label }: { label: string }) {
   )
 }
 
-// Yelp-style red star ratings. Prefers real rating/review fields, falls back to
-// a stable derived value so the UI always reads well (wire to real data later).
-const hashStr = (value: string) => {
-  let h = 0
-  for (let i = 0; i < value.length; i += 1) h = (h * 31 + value.charCodeAt(i)) >>> 0
-  return h
-}
 const ratingOf = (post: SitePost) => {
   const real = Number(getContent(post).rating)
   if (real >= 1 && real <= 5) return Math.round(real * 10) / 10
-  return Math.round((3.7 + (hashStr(post.slug || post.id || post.title || 'x') % 13) / 10) * 10) / 10
+  return null
 }
 const reviewsOf = (post: SitePost) => {
   const real = Number(getContent(post).reviewCount ?? getContent(post).reviews)
   if (real > 0) return Math.floor(real)
-  return 6 + (hashStr((post.slug || post.title || 'x') + 'r') % 480)
+  return null
 }
 
 function RatingLine({ post, center = false }: { post: SitePost; center?: boolean }) {
   const rating = ratingOf(post)
+  if (!rating) return null
   const filled = Math.round(rating)
   return (
     <div className={`mt-2.5 flex items-center gap-2 ${center ? 'justify-center' : ''}`}>
@@ -228,7 +224,7 @@ function RatingLine({ post, center = false }: { post: SitePost; center?: boolean
         ))}
       </span>
       <span className="text-sm font-semibold text-[var(--tk-text)]">{rating.toFixed(1)}</span>
-      <span className="text-sm text-[var(--tk-muted)]">({reviewsOf(post)})</span>
+      {reviewsOf(post) ? <span className="text-sm text-[var(--tk-muted)]">({reviewsOf(post)})</span> : null}
     </div>
   )
 }
